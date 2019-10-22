@@ -7,9 +7,9 @@ public class PlayerMovement : MonoBehaviour
     public MyCharacterController controller;
 
     public float runSpeed = 40f;
+    public float jumpForce = 25f;
     private float horizontalMove = 0f;
     private bool jump = false;
-   // private Vector3 touchPosition;
 
     public Rigidbody2D myRigidbody;
 
@@ -27,28 +27,57 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 touchPosition = Camera.main.ScreenToWorldPoint(Input.touches[i].position);
             Debug.DrawLine(Vector3.zero, touchPosition, Color.red);
+            Debug.Log(touchPosition);
             if (Input.touchCount == 1)
             {
-                if (touchPosition != transform.position)
-                {
-                    float x = touchPosition.x;
-                    float y = touchPosition.y;
+                float x = touchPosition.x;
+                float y = touchPosition.y;
 
-                    if (Mathf.Abs(x) > Mathf.Abs(y))
+                if (Mathf.Abs(x) > Mathf.Abs(y))
+                {
+                    touchPosition.z = 0f;
+                    //touchPosition.y = transform.position.y;
+
+                    if (x < 0)
                     {
-                        if (x < 0)
+                        touchPosition += Vector3.left;
+                    }
+                    else
+                    {
+                        touchPosition += Vector3.right;
+                    }
+
+                    transform.position = Vector3.Lerp(transform.position, touchPosition, runSpeed * Time.fixedDeltaTime);
+                }
+
+                if (Mathf.Abs(y) > 1)
+                {
+                    touchPosition.z = 0f;
+                    touchPosition.x = transform.position.x;
+
+                    if (Physics2D.Raycast(transform.position, Vector2.down, 0.1f))
+                    {
+                        jump = true;
+                    }    
+
+                        // touchPosition += Vector3.up;
+
+                    if (jump == true)
+                    {
+                        if (y < 0)
                         {
-                            touchPosition += Vector3.left;
+                            touchPosition += Vector3.down;
                         }
                         else
                         {
-                            touchPosition += Vector3.right;
+                            touchPosition += Vector3.up;
                         }
 
-                        transform.position = Vector3.MoveTowards(transform.position, touchPosition, runSpeed * Time.fixedDeltaTime);
+                        transform.position = Vector3.Lerp(transform.position, touchPosition, Time.fixedDeltaTime);
+                        jump = false;
                     }
-
                 }
+                
             }
         }
 
@@ -63,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
+        //controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
         jump = false;
     }
 }
