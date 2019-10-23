@@ -9,6 +9,7 @@ public class CameraResize : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Camera.main.orthographicSize = backgroundSize.bounds.extents.x / Camera.main.aspect;
     }
 
     // Update is called once per frame
