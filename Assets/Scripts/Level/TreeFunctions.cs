@@ -18,7 +18,6 @@ public class TreeFunctions : MonoBehaviour
         if (time >= 0)
         {
             time -= Time.fixedDeltaTime;
-            Debug.Log("we are counting down");
         }
         else if (time <= 0)
         {
@@ -26,7 +25,6 @@ public class TreeFunctions : MonoBehaviour
             if (beingChopped)
             {
                 TakeDamage(damageTaken);
-                Debug.Log("time is less than 0");
 
             }
         }
