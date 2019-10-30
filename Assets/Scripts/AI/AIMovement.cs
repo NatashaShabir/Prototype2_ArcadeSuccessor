@@ -7,13 +7,15 @@ public class AIMovement : MonoBehaviour
     public bool movingLeft = true; //Is the AI Moving Left?
     public bool isChopping = false;
     private bool isMoving = false;
-    private bool stateChanged = false;
+    private bool isClimbing = false;
 
     public float speed = 2f; //Speed of Movement
     public int damage = 10;
     public Transform groundDetection; //Point to check for ground from
 
     private TreeFunctions treeRef; //Reference to script on tree
+    public GameObject ladder;
+    private GameObject placedLadder;
 
     public Animator animator; //Reference to Animator on Sprite
 
@@ -24,10 +26,12 @@ public class AIMovement : MonoBehaviour
         Climbing
     }
 
-    private AiStates myState = AiStates.Searching;
+    public AiStates myState;
 
     private void Start()
     {
+        myState = AiStates.Searching;
+
         if (movingLeft == true) //If the player is set to move left at the beginning then make sure he is set to face left
         {
             transform.eulerAngles = new Vector3(0, 0, 0);
@@ -42,11 +46,9 @@ public class AIMovement : MonoBehaviour
     {
         animator.SetBool("isChopping", isChopping); //Tell the animator whether the AI is chopping or not
         animator.SetBool("isMoving", isMoving); //Tells the animator whether the AI is moving or not
+        animator.SetBool("isClimbing", isClimbing); //Tells the animator whether the AI is climbing the ladder or not
 
-        if (stateChanged)
-        {
-            HandleStates();
-        }
+        HandleStates();
 
     }
 
@@ -57,22 +59,25 @@ public class AIMovement : MonoBehaviour
             case AiStates.Searching:
 
                 FindingTree();
-                stateChanged = false;
+                isMoving = true;
+                isClimbing = false;
+                isChopping = false;
 
                     break;
 
             case AiStates.Chopping:
 
                 ChoppingTree();
+                isMoving = false;
                 isChopping = true;
-                stateChanged = false;
 
                 break;
 
             case AiStates.Climbing:
 
+                ClimbingLadder();
                 isChopping = false;
-                stateChanged = false;
+                isClimbing = true;
 
                 break;
         }
@@ -107,7 +112,6 @@ public class AIMovement : MonoBehaviour
         {
             treeRef = col.gameObject.GetComponent<TreeFunctions>();
             myState = AiStates.Chopping; //Sets AI state to chopping
-            stateChanged = true;
         }
     }   
 
@@ -123,5 +127,12 @@ public class AIMovement : MonoBehaviour
             myState = AiStates.Climbing;
         }
     }
-    
+
+    private void ClimbingLadder()
+    {
+        if(placedLadder == null)
+        {
+            placedLadder = Instantiate(ladder, transform.position, transform.rotation);
+        }
+    }
 }
