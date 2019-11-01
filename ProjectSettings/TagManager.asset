@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Tree
+  - Lumberjack
+  - Level
+  - Banana
   layers:
   - Default
   - TransparentFX
@@ -16,13 +19,13 @@ TagManager:
   - 
   - Player
   - Background
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ladder
+  - AI
+  - Level
+  - Back+ForeGround
+  - Ground
+  - Banana
+  - Tree
   - 
   - 
   - 

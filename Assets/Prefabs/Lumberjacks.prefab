@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 642632869255721902}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GroundDetection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 642632869255721903}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.75, y: -0.3, z: 0}
+  m_LocalPosition: {x: -0.5, y: -0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 642632869542593498}
@@ -44,9 +44,9 @@ GameObject:
   - component: {fileID: 642632869542593497}
   - component: {fileID: 642632869542593503}
   - component: {fileID: 642632869542593502}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Lumberjacks
-  m_TagString: Untagged
+  m_TagString: Lumberjack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,7 +135,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &642632869542593497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,10 +150,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movingLeft: 1
   isChopping: 0
+  canClimb: 0
   speed: 2
   damage: 10
+  health: 50
   groundDetection: {fileID: 642632869255721902}
+  ladder: {fileID: 4096032142311741882, guid: 907bbbddfae61514495043f1163b72e2, type: 3}
+  WhatIsGround:
+    serializedVersion: 2
+    m_Bits: 20480
   animator: {fileID: 642632869542593503}
+  rb: {fileID: 642632869542593501}
+  myState: 0
 --- !u!95 &642632869542593503
 Animator:
   serializedVersion: 3
@@ -187,5 +195,5 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 1}
   m_Direction: 0

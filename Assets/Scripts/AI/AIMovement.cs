@@ -8,16 +8,20 @@ public class AIMovement : MonoBehaviour
     public bool isChopping = false;
     private bool isMoving = false;
     private bool isClimbing = false;
+    public bool canClimb = false;
 
     public float speed = 2f; //Speed of Movement
-    public int damage = 10;
+    public int damage = 10; //Damage done to tree when chopping
+    public int health = 50;
     public Transform groundDetection; //Point to check for ground from
 
     private TreeFunctions treeRef; //Reference to script on tree
     public GameObject ladder;
     private GameObject placedLadder;
+    public LayerMask WhatIsGround;
 
     public Animator animator; //Reference to Animator on Sprite
+    public Rigidbody2D rb;
 
     public enum AiStates
     {
@@ -85,10 +89,16 @@ public class AIMovement : MonoBehaviour
 
     private void FindingTree()
     {
+        speed = 2f;
+        rb.gravityScale = 1;
+
+        Physics2D.IgnoreLayerCollision(11, 11, true);
+
         transform.Translate(Vector2.left * speed * Time.deltaTime);  //Make the AI move to it's left by the speed and time
 
-        RaycastHit2D groundCheck = Physics2D.Raycast(groundDetection.position, Vector2.down, 10f); //Check is there is ground below the AI
+        RaycastHit2D groundCheck = Physics2D.Raycast(groundDetection.position, Vector2.down, 2f, WhatIsGround); //Check is there is ground below the AI
 
+       // Debug.Log(groundCheck.collider.name);
         if (groundCheck.collider == false) //If the groundcheck doesn't hit anything then continue code here
         {
             if (movingLeft == true) //If the AI is already moving left we need to flip the direction it is facing
@@ -96,10 +106,10 @@ public class AIMovement : MonoBehaviour
                 transform.eulerAngles = new Vector3(0, -180, 0);
                 movingLeft = false;
             }
-            else //Otherwise reset the direction the AI is facing
+            else//Otherwise reset the direction the AI is facing
             {
                 transform.eulerAngles = new Vector3(0, 0, 0);
-                movingLeft = false;
+                movingLeft = true;
             }
         }        
 
@@ -113,6 +123,7 @@ public class AIMovement : MonoBehaviour
             treeRef = col.gameObject.GetComponent<TreeFunctions>();
             myState = AiStates.Chopping; //Sets AI state to chopping
         }
+
     }   
 
     private void ChoppingTree()
@@ -133,6 +144,29 @@ public class AIMovement : MonoBehaviour
         if(placedLadder == null)
         {
             placedLadder = Instantiate(ladder, transform.position, transform.rotation);
+        }
+
+        if (canClimb)
+        {
+            speed = 5f;
+            rb.gravityScale = 0;
+            
+            transform.Translate(Vector2.up * speed * Time.deltaTime);  //Make the AI move to it's left by the speed and time
+        }
+        
+
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (health > 0)
+        {
+            health -= damage;
+            Debug.Log(health);
+        }
+        else if (health <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 }

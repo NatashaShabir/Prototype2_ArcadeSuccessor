@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2531233417279742244}
   - component: {fileID: 2531233417279742242}
   - component: {fileID: 2531233417279742243}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Tree
   m_TagString: Tree
   m_Icon: {fileID: 0}
@@ -125,4 +125,3 @@ MonoBehaviour:
   time: 0
   timeReset: 2
   beingChopped: 0
-  lumberjack: {fileID: 0}

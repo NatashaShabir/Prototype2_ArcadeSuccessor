@@ -7,6 +7,9 @@ public class PullAndRelease : MonoBehaviour
     Vector2 startPos;
     //force added upon release
     public float force = 1300f;
+
+    private AIMovement aiScript;
+    public int damage = 25;
     
     
     // Start is called before the first frame update
@@ -40,6 +43,17 @@ public class PullAndRelease : MonoBehaviour
 
         //set the position
         transform.position = startPos + dir;
+
+        Physics2D.IgnoreLayerCollision(16, 15, true);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Lumberjack")
+        {
+            aiScript = collision.gameObject.GetComponent<AIMovement>();
+            aiScript.TakeDamage(damage);
+        }
     }
 
 }
